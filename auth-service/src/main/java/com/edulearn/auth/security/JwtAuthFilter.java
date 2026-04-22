@@ -1,4 +1,4 @@
-package com.edulearn.auth.security;
+package com.edulearn.course.auth.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
