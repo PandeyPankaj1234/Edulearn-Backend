@@ -26,6 +26,7 @@
     <modules>
         <module>auth-service</module>
         <module>course-service</module>
+        <module>lesson-service</module>
     </modules>
 
     <!-- Common Properties -->
