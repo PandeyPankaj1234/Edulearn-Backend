@@ -1,4 +1,4 @@
-package com.edulearn.auth.dto;
+package com.edulearn.course.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
-package com.edulearn.auth.config;
+package com.edulearn.course.auth.config;
 
-import com.edulearn.auth.security.JwtAuthFilter;
+import com.edulearn.course.auth.security.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
