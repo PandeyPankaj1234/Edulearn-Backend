@@ -8,8 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="course-service" />
-        <module name="lesson-service" />
         <module name="auth-service" />
+        <module name="lesson-service" />
+        <module name="enrollment-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -17,6 +18,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth-service" options="-parameters" />
       <module name="course-service" options="-parameters" />
+      <module name="enrollment-service" options="-parameters" />
       <module name="lesson-service" options="-parameters" />
     </option>
   </component>
