@@ -9,9 +9,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="course-service" />
         <module name="auth-service" />
-        <module name="assessment-service" />
         <module name="payment-service" />
         <module name="lesson-service" />
+        <module name="progress-service" />
+        <module name="assessment-service" />
         <module name="enrollment-service" />
       </profile>
     </annotationProcessing>
@@ -24,6 +25,7 @@
       <module name="enrollment-service" options="-parameters" />
       <module name="lesson-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
+      <module name="progress-service" options="-parameters" />
     </option>
   </component>
 </project>

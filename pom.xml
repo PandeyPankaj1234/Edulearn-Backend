@@ -30,6 +30,7 @@
         <module>enrollment-service</module>
         <module>assessment-service</module>
         <module>payment-service</module>
+        <module>progress-service</module>
     </modules>
 
     <!-- Common Properties -->
