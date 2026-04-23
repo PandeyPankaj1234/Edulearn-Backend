@@ -28,6 +28,7 @@
         <module>course-service</module>
         <module>lesson-service</module>
         <module>enrollment-service</module>
+        <module>assessment-service</module>
     </modules>
 
     <!-- Common Properties -->

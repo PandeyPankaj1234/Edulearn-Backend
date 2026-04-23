@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="course-service" />
         <module name="auth-service" />
+        <module name="assessment-service" />
         <module name="lesson-service" />
         <module name="enrollment-service" />
       </profile>
@@ -16,6 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="assessment-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="course-service" options="-parameters" />
       <module name="enrollment-service" options="-parameters" />
