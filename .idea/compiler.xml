@@ -15,6 +15,7 @@
         <module name="progress-service" />
         <module name="assessment-service" />
         <module name="enrollment-service" />
+        <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
@@ -26,6 +27,7 @@
       <module name="discussion-service" options="-parameters" />
       <module name="enrollment-service" options="-parameters" />
       <module name="lesson-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
       <module name="progress-service" options="-parameters" />
     </option>
