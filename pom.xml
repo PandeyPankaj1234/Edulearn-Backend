@@ -31,6 +31,7 @@
         <module>assessment-service</module>
         <module>payment-service</module>
         <module>progress-service</module>
+        <module>discussion-service</module>
     </modules>
 
     <!-- Common Properties -->

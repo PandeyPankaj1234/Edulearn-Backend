@@ -11,6 +11,7 @@
         <module name="auth-service" />
         <module name="payment-service" />
         <module name="lesson-service" />
+        <module name="discussion-service" />
         <module name="progress-service" />
         <module name="assessment-service" />
         <module name="enrollment-service" />
@@ -22,6 +23,7 @@
       <module name="assessment-service" options="-parameters" />
       <module name="auth-service" options="-parameters" />
       <module name="course-service" options="-parameters" />
+      <module name="discussion-service" options="-parameters" />
       <module name="enrollment-service" options="-parameters" />
       <module name="lesson-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
