@@ -1,4 +1,4 @@
-package com.edulearn.course.auth.security;
+package com.edulearn.auth.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

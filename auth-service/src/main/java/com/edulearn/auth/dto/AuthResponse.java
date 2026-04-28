@@ -1,4 +1,4 @@
-package com.edulearn.course.auth.dto;
+package com.edulearn.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

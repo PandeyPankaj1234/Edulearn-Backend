@@ -33,6 +33,7 @@
         <module>progress-service</module>
         <module>discussion-service</module>
         <module>notification-service</module>
+        <module>api-gateway</module>
     </modules>
 
     <!-- Common Properties -->

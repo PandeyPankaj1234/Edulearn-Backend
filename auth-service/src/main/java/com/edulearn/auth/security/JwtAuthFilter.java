@@ -1,4 +1,4 @@
-package com.edulearn.course.auth.security;
+package com.edulearn.auth.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private com.edulearn.auth.security.JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

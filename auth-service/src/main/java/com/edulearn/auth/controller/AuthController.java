@@ -1,10 +1,10 @@
-package com.edulearn.course.auth.controller;
+package com.edulearn.auth.controller;
 
-import com.edulearn.course.auth.dto.AuthResponse;
-import com.edulearn.course.auth.dto.LoginRequest;
-import com.edulearn.course.auth.dto.RegisterRequest;
-import com.edulearn.course.auth.entity.User;
-import com.edulearn.course.auth.service.AuthService;
+import com.edulearn.auth.dto.AuthResponse;
+import com.edulearn.auth.dto.LoginRequest;
+import com.edulearn.auth.dto.RegisterRequest;
+import com.edulearn.auth.entity.User;
+import com.edulearn.auth.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
