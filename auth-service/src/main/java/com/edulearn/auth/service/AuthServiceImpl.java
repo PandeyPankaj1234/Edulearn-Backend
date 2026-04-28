@@ -1,11 +1,11 @@
-package com.edulearn.course.auth.service;
+package com.edulearn.auth.service;
 
-import com.edulearn.course.auth.dto.AuthResponse;
-import com.edulearn.course.auth.dto.LoginRequest;
-import com.edulearn.course.auth.dto.RegisterRequest;
-import com.edulearn.course.auth.entity.User;
-import com.edulearn.course.auth.repository.UserRepository;
-import com.edulearn.course.auth.security.JwtUtil;
+import com.edulearn.auth.dto.AuthResponse;
+import com.edulearn.auth.dto.LoginRequest;
+import com.edulearn.auth.dto.RegisterRequest;
+import com.edulearn.auth.entity.User;
+import com.edulearn.auth.repository.UserRepository;
+import com.edulearn.auth.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

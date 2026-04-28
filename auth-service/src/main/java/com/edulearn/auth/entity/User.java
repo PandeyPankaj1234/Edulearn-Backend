@@ -1,4 +1,4 @@
-package com.edulearn.course.auth.entity;
+package com.edulearn.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

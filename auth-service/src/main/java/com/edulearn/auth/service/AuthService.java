@@ -1,9 +1,9 @@
-package com.edulearn.course.auth.service;
+package com.edulearn.auth.service;
 
-import com.edulearn.course.auth.dto.AuthResponse;
-import com.edulearn.course.auth.dto.LoginRequest;
-import com.edulearn.course.auth.dto.RegisterRequest;
-import com.edulearn.course.auth.entity.User;
+import com.edulearn.auth.dto.AuthResponse;
+import com.edulearn.auth.dto.LoginRequest;
+import com.edulearn.auth.dto.RegisterRequest;
+import com.edulearn.auth.entity.User;
 
 public interface AuthService {
 
