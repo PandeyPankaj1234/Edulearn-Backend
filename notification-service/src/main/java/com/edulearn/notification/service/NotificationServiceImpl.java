@@ -21,6 +21,9 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
 
+    @Autowired
+    private EmailService emailService;
+
     @Override
     public Notification sendNotification(NotificationRequest request) {
         Notification notification = new Notification();
@@ -52,8 +55,22 @@ public class NotificationServiceImpl implements NotificationService {
             notification.setIsRead(false);
             notifications.add(notification);
         }
-        return notificationRepository.saveAll(notifications);
+        List<Notification> saved = notificationRepository.saveAll(notifications);
+
+        // Send real emails to all recipients
+        if (request.getRecipientEmails() != null && !request.getRecipientEmails().isEmpty()) {
+            for (String email : request.getRecipientEmails()) {
+                try {
+                    emailService.sendAdminBroadcast(email, request.getType(),
+                            request.getTitle(), request.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Bulk email failed for " + email + ": " + e.getMessage());
+                }
+            }
+        }
+        return saved;
     }
+
 
     @Override
     public void markAsRead(Long notificationId) {

@@ -9,10 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/attempts")
-@CrossOrigin(origins = "*")
+
 public class AttemptController {
 
     @Autowired
@@ -58,4 +60,13 @@ public class AttemptController {
         return ResponseEntity.ok(
                 assessmentService.getAttemptCount(studentId, quizId));
     }
-}
+
+    // GET /api/attempts/best-score
+    @GetMapping("/best-score")
+    public ResponseEntity<Optional<Attempt>> getBestScore(
+            @RequestParam Long studentId,
+            @RequestParam Long quizId) {
+        return ResponseEntity.ok(
+                assessmentService.getBestScore(studentId, quizId));
+    }
+}

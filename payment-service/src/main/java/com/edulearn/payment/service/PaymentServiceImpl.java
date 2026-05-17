@@ -4,11 +4,14 @@ import com.edulearn.payment.dto.PaymentRequest;
 import com.edulearn.payment.dto.SubscriptionRequest;
 import com.edulearn.payment.entity.Payment;
 import com.edulearn.payment.entity.Subscription;
+import com.edulearn.payment.messaging.EventPublisher;
+import com.edulearn.payment.messaging.NotificationEvent;
 import com.edulearn.payment.repository.PaymentRepository;
 import com.edulearn.payment.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +23,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     @Override
     public Payment processPayment(PaymentRequest request) {
@@ -33,7 +39,22 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setTransactionId("TXN-" + UUID.randomUUID()
                 .toString().substring(0, 8).toUpperCase());
         payment.setStatus("Success");
-        return paymentRepository.save(payment);
+        Payment saved = paymentRepository.save(payment);
+
+        // Publish PAYMENT_COMPLETED → email receipt to student
+        if (request.getStudentEmail() != null) {
+            NotificationEvent evt = new NotificationEvent();
+            evt.setEventType("PAYMENT_COMPLETED");
+            evt.setRecipientEmail(request.getStudentEmail());
+            evt.setRecipientName(request.getStudentName() != null ? request.getStudentName() : "Student");
+            evt.setCourseName(request.getCourseName());
+            evt.setAmount(request.getAmount());
+            evt.setRelatedEntityId(saved.getPaymentId());
+            evt.setRelatedEntityType("PAYMENT");
+            evt.setEventTime(LocalDateTime.now());
+            eventPublisher.publish("notification.payment.completed", evt);
+        }
+        return saved;
     }
 
     @Override
@@ -72,7 +93,21 @@ public class PaymentServiceImpl implements PaymentService {
         subscription.setPlan(request.getPlan());
         subscription.setAmountPaid(request.getAmountPaid());
         subscription.setAutoRenew(request.getAutoRenew());
-        return subscriptionRepository.save(subscription);
+        Subscription saved = subscriptionRepository.save(subscription);
+
+        // Publish SUBSCRIPTION_CREATED → email confirmation to student
+        if (request.getStudentEmail() != null) {
+            NotificationEvent evt = new NotificationEvent();
+            evt.setEventType("SUBSCRIPTION_CREATED");
+            evt.setRecipientEmail(request.getStudentEmail());
+            evt.setRecipientName(request.getStudentName() != null ? request.getStudentName() : "Student");
+            evt.setAmount(request.getAmountPaid());
+            evt.setRelatedEntityId(saved.getSubscriptionId());
+            evt.setRelatedEntityType("SUBSCRIPTION");
+            evt.setEventTime(LocalDateTime.now());
+            eventPublisher.publish("notification.subscription.created", evt);
+        }
+        return saved;
     }
 
     @Override
@@ -110,4 +145,56 @@ public class PaymentServiceImpl implements PaymentService {
     public List<Subscription> getAllActiveSubscriptions() {
         return subscriptionRepository.findByStatus("Active");
     }
+
+    @Override
+    public Subscription renewSubscription(Long subscriptionId) {
+        Subscription subscription = subscriptionRepository
+                .findById(subscriptionId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Subscription not found!"));
+        // Extend end date based on plan
+        if (subscription.getEndDate() != null) {
+            switch (subscription.getPlan() != null
+                    ? subscription.getPlan() : "Monthly") {
+                case "Annual" ->
+                    subscription.setEndDate(
+                            subscription.getEndDate().plusYears(1));
+                default ->
+                    subscription.setEndDate(
+                            subscription.getEndDate().plusMonths(1));
+            }
+        }
+        subscription.setStatus("Active");
+        return subscriptionRepository.save(subscription);
+    }
+
+    @Override
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
+
+    @Override
+    public Subscription refundSubscription(Long subscriptionId) {
+        Subscription subscription = subscriptionRepository
+                .findById(subscriptionId)
+                .orElseThrow(() -> new RuntimeException("Subscription not found!"));
+        if ("Refunded".equals(subscription.getStatus())) {
+            throw new RuntimeException("Subscription already refunded!");
+        }
+        subscription.setStatus("Refunded");
+        subscription.setAutoRenew(false);
+        Subscription saved = subscriptionRepository.save(subscription);
+
+        // Publish SUBSCRIPTION_REFUNDED → refund notice email to student
+        // Note: studentEmail not available here without a lookup — fire-and-forget with ID
+        NotificationEvent evt = new NotificationEvent();
+        evt.setEventType("SUBSCRIPTION_REFUNDED");
+        evt.setAmount(saved.getAmountPaid());
+        evt.setRelatedEntityId(subscriptionId);
+        evt.setRelatedEntityType("SUBSCRIPTION");
+        evt.setEventTime(LocalDateTime.now());
+        eventPublisher.publish("notification.subscription.refunded", evt);
+        return saved;
+    }
 }
+

@@ -2,11 +2,14 @@ package com.edulearn.enrollment.service;
 
 import com.edulearn.enrollment.dto.EnrollmentRequest;
 import com.edulearn.enrollment.entity.Enrollment;
+import com.edulearn.enrollment.messaging.EventPublisher;
+import com.edulearn.enrollment.messaging.NotificationEvent;
 import com.edulearn.enrollment.repository.EnrollmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,6 +17,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     @Override
     public Enrollment enroll(EnrollmentRequest request) {
@@ -26,7 +32,23 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         Enrollment enrollment = new Enrollment();
         enrollment.setStudentId(request.getStudentId());
         enrollment.setCourseId(request.getCourseId());
-        return enrollmentRepository.save(enrollment);
+        Enrollment saved = enrollmentRepository.save(enrollment);
+
+        // Publish ENROLLMENT_CREATED event → notification-service sends emails
+        if (request.getStudentEmail() != null) {
+            NotificationEvent event = new NotificationEvent();
+            event.setEventType("ENROLLMENT_CREATED");
+            event.setRecipientEmail(request.getStudentEmail());
+            event.setRecipientName(request.getStudentName() != null ? request.getStudentName() : "Student");
+            event.setCourseName(request.getCourseName());
+            event.setInstructorEmail(request.getInstructorEmail());
+            event.setInstructorName(request.getInstructorName());
+            event.setRelatedEntityId(saved.getEnrollmentId());
+            event.setRelatedEntityType("ENROLLMENT");
+            event.setEventTime(LocalDateTime.now());
+            eventPublisher.publish("notification.enrollment.created", event);
+        }
+        return saved;
     }
 
     @Override
@@ -92,4 +114,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     public long getEnrollmentCount(Long courseId) {
         return enrollmentRepository.countByCourseId(courseId);
     }
-}
+
+    @Override
+    public List<Enrollment> getAllEnrollments() {
+        return enrollmentRepository.findAll();
+    }
+}

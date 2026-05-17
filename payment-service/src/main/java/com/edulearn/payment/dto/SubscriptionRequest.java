@@ -16,4 +16,8 @@ public class SubscriptionRequest {
     private Double amountPaid;
 
     private Boolean autoRenew = false;
+
+    // Optional fields for email notifications
+    private String studentEmail;
+    private String studentName;
 }

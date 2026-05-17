@@ -8,6 +8,8 @@ import com.edulearn.assessment.entity.Question;
 import com.edulearn.assessment.entity.Quiz;
 
 import java.util.List;
+import java.util.Optional;
+
 
 public interface AssessmentService {
 
@@ -34,4 +36,6 @@ public interface AssessmentService {
     void publishQuiz(Long quizId);
 
     long getAttemptCount(Long studentId, Long quizId);
-}
+
+    Optional<Attempt> getBestScore(Long studentId, Long quizId);
+}

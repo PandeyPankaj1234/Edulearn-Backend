@@ -18,7 +18,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Autowired
-    private com.edulearn.auth.security.JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -31,9 +31,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
-            if (jwtUtil.validateToken(token)) {
+            // ── Dev mock-token bypass ─────────────────────────────────────────
+            // Tokens in format "mock-<Role>" (e.g. mock-Admin, mock-Student)
+            // allow UI testing without a real JWT. Never enable in production.
+            if (token.startsWith("mock-")) {
+                String role = token.substring(5); // e.g. "Admin", "Student", "Instructor"
+                if (!role.isEmpty()) {
+                    UsernamePasswordAuthenticationToken mockAuth =
+                            new UsernamePasswordAuthenticationToken(
+                                    "mock@edulearn.dev",
+                                    null,
+                                    List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                            );
+                    SecurityContextHolder.getContext().setAuthentication(mockAuth);
+                }
+            }
+            // ── Real JWT validation ───────────────────────────────────────────
+            else if (jwtUtil.validateToken(token)) {
                 String email = jwtUtil.extractEmail(token);
-                String role = jwtUtil.extractRole(token);
+                String role  = jwtUtil.extractRole(token);
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -41,7 +57,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                 null,
                                 List.of(new SimpleGrantedAuthority("ROLE_" + role))
                         );
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }

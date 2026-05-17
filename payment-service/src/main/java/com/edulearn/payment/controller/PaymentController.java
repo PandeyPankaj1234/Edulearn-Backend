@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/payments")
-@CrossOrigin(origins = "*")
+
 public class PaymentController {
 
     @Autowired
@@ -56,6 +56,12 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getTotalRevenue());
     }
 
+    // GET /api/payments/all  — admin endpoint
+    @GetMapping("/all")
+    public ResponseEntity<List<Payment>> getAllPayments() {
+        return ResponseEntity.ok(paymentService.getAllPayments());
+    }
+
     // POST /api/payments/subscribe
     @PostMapping("/subscribe")
     public ResponseEntity<Subscription> subscribe(
@@ -93,4 +99,21 @@ public class PaymentController {
         return ResponseEntity.ok(
                 paymentService.getAllActiveSubscriptions());
     }
+
+    // PUT /api/payments/subscriptions/{subscriptionId}/renew
+    @PutMapping("/subscriptions/{subscriptionId}/renew")
+    public ResponseEntity<Subscription> renewSubscription(
+            @PathVariable Long subscriptionId) {
+        return ResponseEntity.ok(
+                paymentService.renewSubscription(subscriptionId));
+    }
+
+    // PUT /api/payments/subscriptions/{subscriptionId}/refund  — Admin endpoint
+    @PutMapping("/subscriptions/{subscriptionId}/refund")
+    public ResponseEntity<Subscription> refundSubscription(
+            @PathVariable Long subscriptionId) {
+        return ResponseEntity.ok(
+                paymentService.refundSubscription(subscriptionId));
+    }
 }
+

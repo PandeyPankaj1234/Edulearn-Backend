@@ -26,4 +26,13 @@ public interface CourseService {
     void deleteCourse(Long courseId);
 
     List<Course> getFeaturedCourses();
-}
+
+    // ── Approval Workflow ───────────────────────────────────────────────────
+    Course submitForReview(Long courseId);
+
+    Course approveCourse(Long courseId);
+
+    Course rejectCourse(Long courseId, String reason);
+
+    List<Course> getCoursesByApprovalStatus(String approvalStatus);
+}

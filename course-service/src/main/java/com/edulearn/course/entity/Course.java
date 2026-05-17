@@ -40,10 +40,17 @@ public class Course {
 
     private String language;
 
+    // Draft → PendingReview → Approved / Rejected
+    private String approvalStatus = "Draft";
+
+    @Column(length = 500)
+    private String rejectionReason;
+
     private LocalDate createdAt;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDate.now();
+        if (this.approvalStatus == null) this.approvalStatus = "Draft";
     }
-}
+}

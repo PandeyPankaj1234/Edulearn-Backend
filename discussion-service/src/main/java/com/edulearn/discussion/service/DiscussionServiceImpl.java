@@ -130,4 +130,9 @@ public class DiscussionServiceImpl implements DiscussionService {
     public long getReplyCount(Long threadId) {
         return replyRepository.countByThreadId(threadId);
     }
-}
+
+    @Override
+    public List<DiscussionThread> getThreadsByAuthor(Long authorId) {
+        return threadRepository.findByAuthorId(authorId);
+    }
+}

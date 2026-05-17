@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/progress")
-@CrossOrigin(origins = "*")
+
 public class ProgressController {
 
     @Autowired
@@ -104,4 +104,10 @@ public class ProgressController {
         return ResponseEntity.ok(
                 progressService.getCertificatesByStudent(studentId));
     }
-}
+
+    // GET /api/progress/certificates/all  — admin endpoint
+    @GetMapping("/certificates/all")
+    public ResponseEntity<List<Certificate>> getAllCertificates() {
+        return ResponseEntity.ok(progressService.getAllCertificates());
+    }
+}

@@ -147,4 +147,9 @@ public class ProgressServiceImpl implements ProgressService {
     public List<Certificate> getCertificatesByStudent(Long studentId) {
         return certificateRepository.findByStudentId(studentId);
     }
-}
+
+    @Override
+    public List<Certificate> getAllCertificates() {
+        return certificateRepository.findAll();
+    }
+}

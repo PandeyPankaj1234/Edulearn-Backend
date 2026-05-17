@@ -1,0 +1,25 @@
+# === Build output ===
+target/
+*.class
+*.jar
+*.war
+
+# === IDE ===
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# === OS ===
+.DS_Store
+Thumbs.db
+erl_crash.dump
+
+# === Logs ===
+*.log
+logs/
+
+# === Environment / Local scripts ===
+*.bat
+*.ps1
+*.env

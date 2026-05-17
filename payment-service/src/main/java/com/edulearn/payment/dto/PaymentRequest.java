@@ -17,4 +17,9 @@ public class PaymentRequest {
     private String mode; // card, wallet, UPI
 
     private String currency = "INR";
+
+    // Optional fields for email notifications
+    private String studentEmail;
+    private String studentName;
+    private String courseName;
 }

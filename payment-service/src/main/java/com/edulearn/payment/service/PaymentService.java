@@ -28,4 +28,11 @@ public interface PaymentService {
     Double getTotalRevenue();
 
     List<Subscription> getAllActiveSubscriptions();
+
+    Subscription renewSubscription(Long subscriptionId);
+
+    List<Payment> getAllPayments();
+
+    // Admin: cancel + refund a subscription
+    Subscription refundSubscription(Long subscriptionId);
 }

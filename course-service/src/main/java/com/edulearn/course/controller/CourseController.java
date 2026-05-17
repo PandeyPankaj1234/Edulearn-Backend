@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
-@CrossOrigin(origins = "*")
+
 public class CourseController {
 
     @Autowired
@@ -88,4 +88,34 @@ public class CourseController {
         courseService.deleteCourse(courseId);
         return ResponseEntity.ok("Course deleted successfully!");
     }
-}
+
+    // ── Approval Workflow ────────────────────────────────────────────────────
+
+    // PUT /api/courses/{courseId}/submit-review  — Instructor submits for admin review
+    @PutMapping("/{courseId}/submit-review")
+    public ResponseEntity<Course> submitForReview(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.submitForReview(courseId));
+    }
+
+    // PUT /api/courses/{courseId}/approve  — Admin approves + publishes
+    @PutMapping("/{courseId}/approve")
+    public ResponseEntity<Course> approveCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.approveCourse(courseId));
+    }
+
+    // PUT /api/courses/{courseId}/reject  — Admin rejects with reason
+    @PutMapping("/{courseId}/reject")
+    public ResponseEntity<Course> rejectCourse(
+            @PathVariable Long courseId,
+            @RequestParam(required = false, defaultValue = "Does not meet quality standards")
+            String reason) {
+        return ResponseEntity.ok(courseService.rejectCourse(courseId, reason));
+    }
+
+    // GET /api/courses/admin/approval-status?status=PendingReview
+    @GetMapping("/admin/approval-status")
+    public ResponseEntity<List<Course>> getCoursesByApprovalStatus(
+            @RequestParam String status) {
+        return ResponseEntity.ok(courseService.getCoursesByApprovalStatus(status));
+    }
+}

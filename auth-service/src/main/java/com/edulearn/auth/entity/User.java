@@ -38,11 +38,15 @@ public class User {
 
     private String profilePicUrl;
 
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'Active'")
+    private String status = "Active"; // Active, Suspended, Inactive
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        if (this.status == null) this.status = "Active";
     }
 }

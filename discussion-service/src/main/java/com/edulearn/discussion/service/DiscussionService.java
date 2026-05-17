@@ -34,4 +34,6 @@ public interface DiscussionService {
     List<DiscussionThread> searchThreads(String keyword);
 
     long getReplyCount(Long threadId);
-}
+
+    List<DiscussionThread> getThreadsByAuthor(Long authorId);
+}

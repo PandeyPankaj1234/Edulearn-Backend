@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/discussions")
-@CrossOrigin(origins = "*")
+
 public class DiscussionController {
 
     @Autowired
@@ -42,6 +42,14 @@ public class DiscussionController {
             @PathVariable Long lessonId) {
         return ResponseEntity.ok(
                 discussionService.getThreadsByLesson(lessonId));
+    }
+
+    // GET /api/discussions/threads/author/{authorId}
+    @GetMapping("/threads/author/{authorId}")
+    public ResponseEntity<List<DiscussionThread>> getThreadsByAuthor(
+            @PathVariable Long authorId) {
+        return ResponseEntity.ok(
+                discussionService.getThreadsByAuthor(authorId));
     }
 
     // GET /api/discussions/threads/search?keyword=java

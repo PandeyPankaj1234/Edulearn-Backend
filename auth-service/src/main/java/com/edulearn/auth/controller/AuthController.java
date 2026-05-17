@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")
+
 public class AuthController {
 
     @Autowired
@@ -61,4 +63,40 @@ public class AuthController {
         authService.deleteAccount(userId);
         return ResponseEntity.ok("Account deleted successfully!");
     }
+
+    // ── ADMIN ENDPOINTS ─────────────────────────────────────────────────────
+
+    // GET /api/auth/admin/users  — all users
+    @GetMapping("/admin/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(authService.getAllUsers());
+    }
+
+    // GET /api/auth/admin/users/role/{role}  — filter by role
+    @GetMapping("/admin/users/role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
+        return ResponseEntity.ok(authService.getUsersByRole(role));
+    }
+
+    // PUT /api/auth/admin/users/{userId}/suspend  — toggle suspend
+    @PutMapping("/admin/users/{userId}/suspend")
+    public ResponseEntity<User> suspendUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(authService.suspendUser(userId));
+    }
+
+    // GET /api/auth/admin/users/search  — search by name
+    @GetMapping("/admin/users/search")
+    public ResponseEntity<List<User>> searchUsers(@RequestParam String name) {
+        return ResponseEntity.ok(authService.searchUsers(name));
+    }
+
+    // ── Google OAuth ─────────────────────────────────────────────────────────
+
+    // POST /api/auth/google  — receive Google profile, return platform JWT
+    @PostMapping("/google")
+    public ResponseEntity<com.edulearn.auth.dto.AuthResponse> googleLogin(
+            @RequestBody com.edulearn.auth.dto.GoogleAuthRequest request) {
+        return ResponseEntity.ok(authService.googleLogin(request));
+    }
 }
+

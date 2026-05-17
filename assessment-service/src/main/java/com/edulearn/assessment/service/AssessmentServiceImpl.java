@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
@@ -165,4 +167,10 @@ public class AssessmentServiceImpl implements AssessmentService {
     public long getAttemptCount(Long studentId, Long quizId) {
         return attemptRepository.countByStudentIdAndQuizId(studentId, quizId);
     }
-}
+
+    @Override
+    public Optional<Attempt> getBestScore(Long studentId, Long quizId) {
+        return attemptRepository
+                .findTopByStudentIdAndQuizIdOrderByScoreDesc(studentId, quizId);
+    }
+}

@@ -29,4 +29,6 @@ public interface ProgressService {
     List<Progress> getAllProgressByStudent(Long studentId);
 
     List<Certificate> getCertificatesByStudent(Long studentId);
+
+    List<Certificate> getAllCertificates();
 }

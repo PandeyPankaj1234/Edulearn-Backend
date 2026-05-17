@@ -24,4 +24,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 
     @Query("SELECT c FROM Course c WHERE c.title LIKE %:keyword% OR c.description LIKE %:keyword%")
     List<Course> searchByKeyword(String keyword);
-}
+
+    List<Course> findByApprovalStatus(String approvalStatus);
+}

@@ -24,4 +24,7 @@ public class BulkNotificationRequest {
     private Long relatedEntityId;
 
     private String relatedEntityType;
-}
+
+    // For real email delivery — frontend passes emails of targeted users
+    private List<String> recipientEmails;
+}

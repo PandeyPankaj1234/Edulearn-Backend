@@ -24,4 +24,5 @@ public interface EnrollmentService {
     void issueCertificate(Long enrollmentId);
 
     long getEnrollmentCount(Long courseId);
+    List<Enrollment> getAllEnrollments();
 }

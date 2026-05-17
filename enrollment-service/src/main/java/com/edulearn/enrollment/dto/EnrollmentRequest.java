@@ -11,4 +11,11 @@ public class EnrollmentRequest {
 
     @NotNull(message = "Course ID is required")
     private Long courseId;
+
+    // Optional fields for email notifications
+    private String studentEmail;
+    private String studentName;
+    private String courseName;
+    private String instructorEmail;
+    private String instructorName;
 }

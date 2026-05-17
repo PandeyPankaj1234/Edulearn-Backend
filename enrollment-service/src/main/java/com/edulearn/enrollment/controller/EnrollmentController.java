@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/enrollments")
-@CrossOrigin(origins = "*")
+
 public class EnrollmentController {
 
     @Autowired
@@ -86,4 +86,10 @@ public class EnrollmentController {
             @PathVariable Long courseId) {
         return ResponseEntity.ok(enrollmentService.getEnrollmentCount(courseId));
     }
-}
+
+    // GET /api/enrollments/all
+    @GetMapping("/all")
+    public ResponseEntity<List<Enrollment>> getAllEnrollments() {
+        return ResponseEntity.ok(enrollmentService.getAllEnrollments());
+    }
+}
